@@ -50,7 +50,7 @@ function connect() {
     attempts++
     // booting/queued servers need patience; real failures retry fast
     const slow = /queued|start|offline|asleep/i.test(lastKick)
-    const wait = slow ? 60000 : Math.min(15000 + attempts * 5000, 60000)
+    const wait = slow ? 120000 : Math.min(15000 + attempts * 5000, 60000)
     log('retrying in', wait / 1000 + 's')
     setTimeout(connect, wait)
   })

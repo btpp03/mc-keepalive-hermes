@@ -1,0 +1,13 @@
+{
+  "name": "mc-keepalive",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Minecraft keepalive bot for a free host that sleeps when no players are online",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "mineflayer": "^4.32.0"
+  }
+}

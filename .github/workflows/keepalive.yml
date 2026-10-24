@@ -1,0 +1,36 @@
+name: keepalive
+
+# Free hosts (mcserverhost.com "free" sleep policy) power the container off after
+# ~5 min with no players online. A logged-in player keeps it running, which in turn
+# keeps whatever else lives in that container (sidecar processes) alive.
+#
+# Each run holds the session for 5h30m; jobs are scheduled every 5h with a
+# concurrency group so runs overlap instead of leaving a gap.
+
+on:
+  schedule:
+    - cron: "0 */5 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: mc-keepalive
+  cancel-in-progress: false
+
+jobs:
+  bot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: install
+        run: npm ci --no-audit --no-fund
+      - name: hold session
+        env:
+          MC_HOST: btppmc.mcsh.gg
+          MC_PORT: "25565"
+          MC_USER: keepalive
+          MAX_MINUTES: "330"
+        run: node bot.js
